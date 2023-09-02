@@ -35,8 +35,14 @@ def _move_file(destination, entry):
 
 
 class MoverHandler(FileSystemEventHandler):
+    directory_to_observe: str
+
+    def __init__(self, dir_to_observe):
+        self.directory_to_observe = dir_to_observe
+        super().__init__()
+
     def on_modified(self, event):
-        with scandir(constants.SOURCE_DIRECTORY) as entries:
+        with scandir(self.directory_to_observe) as entries:
             for entry in entries:
                 self._check_access_files(entry)
                 self._check_excel_files(entry)
@@ -44,6 +50,11 @@ class MoverHandler(FileSystemEventHandler):
                 self._check_pdf_files(entry)
                 self._check_image_files(entry)
                 self._check_video_files(entry)
+                self._check_compressed_files(entry)
+                self._check_text_files(entry)
+
+                if self.directory_to_observe == constants.DOWNLOADS_DIRECTORY:
+                    self._check_installation_application_files(entry)
 
     @staticmethod
     def _check_files(extension: str, destination: str, entry):
@@ -67,7 +78,24 @@ class MoverHandler(FileSystemEventHandler):
         self._check_multi_extension_files(constants.WORD_EXTENSIONS, constants.WORD_DESTINATION_DIRECTORY, entry)
 
     def _check_pdf_files(self, entry):
-        self._check_files(constants.PDF_EXTENSION, constants.PDF_DESTINATION_DIRECTORY, entry)
+        self._check_files('.pdf', constants.PDF_DESTINATION_DIRECTORY, entry)
+
+    def _check_text_files(self, entry):
+        self._check_files('.txt', constants.TEXT_DESTINATION_DIRECTORY, entry)
+
+    def _check_compressed_files(self, entry):
+        self._check_multi_extension_files(
+            constants.COMPRESSED_FILE_EXTENSIONS,
+            constants.COMPRESSED_FILE_DESTINATION_DIRECTORY,
+            entry
+        )
+
+    def _check_installation_application_files(self, entry):
+        self._check_multi_extension_files(
+            constants.INSTALLATION_APPLICATION_EXTENSION,
+            constants.INSTALLATION_APPLICATION_DESTINATION_DIRECTORY,
+            entry
+        )
 
     def _check_image_files(self, entry):
         self._check_multi_extension_files(constants.IMAGE_EXTENSIONS, constants.DESTINATION_DIRECTORY_IMAGE, entry)

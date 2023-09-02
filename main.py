@@ -4,9 +4,10 @@ from time import sleep
 
 from watchdog.observers import Observer
 
-from src.constants import SOURCE_DIRECTORY, DESTINATION_DIRECTORY_MUSIC, DESTINATION_DIRECTORY_VIDEO, \
+from src.constants import DOWNLOADS_DIRECTORY, DESTINATION_DIRECTORY_MUSIC, DESTINATION_DIRECTORY_VIDEO, \
     DESTINATION_DIRECTORY_IMAGE, ACCESS_DESTINATION_DIRECTORY, EXCEL_DESTINATION_DIRECTORY, WORD_DESTINATION_DIRECTORY, \
-    PDF_DESTINATION_DIRECTORY
+    PDF_DESTINATION_DIRECTORY, COMPRESSED_FILE_DESTINATION_DIRECTORY, INSTALLATION_APPLICATION_DESTINATION_DIRECTORY, \
+    TEXT_DESTINATION_DIRECTORY
 
 from src.logger import CustomLoggingFormatter
 from src.mover_handler import MoverHandler
@@ -14,7 +15,7 @@ from src.mover_handler import MoverHandler
 log = logging.getLogger()
 
 
-def init():
+def _create_directories():
     if not os.path.exists(DESTINATION_DIRECTORY_IMAGE):
         log.info(f'Create "{DESTINATION_DIRECTORY_IMAGE}" directory')
         os.makedirs(DESTINATION_DIRECTORY_IMAGE)
@@ -43,6 +44,18 @@ def init():
         log.info(f'Create "{PDF_DESTINATION_DIRECTORY}" directory')
         os.makedirs(PDF_DESTINATION_DIRECTORY)
 
+    if not os.path.exists(COMPRESSED_FILE_DESTINATION_DIRECTORY):
+        log.info(f'Create "{COMPRESSED_FILE_DESTINATION_DIRECTORY}" directory')
+        os.makedirs(COMPRESSED_FILE_DESTINATION_DIRECTORY)
+
+    if not os.path.exists(INSTALLATION_APPLICATION_DESTINATION_DIRECTORY):
+        log.info(f'Create "{INSTALLATION_APPLICATION_DESTINATION_DIRECTORY}" directory')
+        os.makedirs(INSTALLATION_APPLICATION_DESTINATION_DIRECTORY)
+
+    if not os.path.exists(TEXT_DESTINATION_DIRECTORY):
+        log.info(f'Create "{TEXT_DESTINATION_DIRECTORY}" directory')
+        os.makedirs(TEXT_DESTINATION_DIRECTORY)
+
 
 if __name__ == "__main__":
     handler = logging.StreamHandler()
@@ -52,11 +65,14 @@ if __name__ == "__main__":
         handlers=[handler]
     )
 
-    init()
-    print("Start Organization")
+    print("Insert the directory path you want to organize:")
+    path = input()
+    _create_directories()
+    if path == "":
+        path = DOWNLOADS_DIRECTORY
 
-    path = SOURCE_DIRECTORY
-    event_handler = MoverHandler()
+    print(f'Start listing for changes on "{path}":')
+    event_handler = MoverHandler(path)
     observer = Observer()
     observer.schedule(event_handler, path, recursive=True)
     observer.start()

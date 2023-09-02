@@ -4,7 +4,7 @@ import os
 _YEAR = str(datetime.date.today())[:4]
 
 # Directory to observe
-SOURCE_DIRECTORY = f"C:/Users/{os.getlogin()}/Downloads/"
+DOWNLOADS_DIRECTORY = f"C:/Users/{os.getlogin()}/Downloads/"
 
 # Destination directories
 DESTINATION_DIRECTORY_MUSIC = f'C:/Users/{os.getlogin()}/Music/{_YEAR}'
@@ -15,7 +15,12 @@ DESTINATION_DIRECTORY_IMAGE = f'C:/Users/{os.getlogin()}/Pictures/{_YEAR}'
 ACCESS_DESTINATION_DIRECTORY = f'C:/Users/{os.getlogin()}/Documents/Office/Access'
 EXCEL_DESTINATION_DIRECTORY = f'C:/Users/{os.getlogin()}/Documents/Office/Excel'
 WORD_DESTINATION_DIRECTORY = f'C:/Users/{os.getlogin()}/Documents/Office/Word'
+POWER_POINT_DESTINATION_DIRECTORY = f'C:/Users/{os.getlogin()}/Documents/Office/PowerPoint'
+
 PDF_DESTINATION_DIRECTORY = f'C:/Users/{os.getlogin()}/Documents/Office/PDFs'
+TEXT_DESTINATION_DIRECTORY = f'C:/Users/{os.getlogin()}/Documents/Text'
+COMPRESSED_FILE_DESTINATION_DIRECTORY = f'C:/Users/{os.getlogin()}/Documents/Compressed'
+INSTALLATION_APPLICATION_DESTINATION_DIRECTORY = f'C:/Users/{os.getlogin()}/Documents/Application_Installers'
 
 # Supported image types
 IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.jpe', '.jif' 'jfif', '.jfi', '.png', '.gif', '.webp', '.tiff', '.tif',
@@ -41,4 +46,9 @@ EXCEL_EXTENSIONS = ['.xlsx', '.xlsm', '.xlsb', '.xltx', '.xltm', '.xls', '.xlt',
 # Supported word types
 WORD_EXTENSIONS = ['.docx', '.docm', '.dotx', '.dotm', '.docb', '.wll', '.wwl']
 
-PDF_EXTENSION = '.pdf'
+# Supported PowerPoint types
+POWER_POINT_EXTENSIONS = ['.pot', '.potm', '.potx', '.ppam', '.pps', '.ppsm', '.ppsx', '.ppt', '.pptm', '.pptx']
+
+INSTALLATION_APPLICATION_EXTENSION = ['.exe', '.msi']
+
+COMPRESSED_FILE_EXTENSIONS = ['.zip', '.z', '.rpm', '.rar', '.pkg', '.deb']
